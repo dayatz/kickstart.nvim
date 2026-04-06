@@ -112,7 +112,26 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
     vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
     vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-    vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+    vim.keymap.set('n', '<leader><leader>', function()
+      local make_entry = require 'telescope.make_entry'
+      local original_gen = make_entry.gen_from_buffer
+      make_entry.gen_from_buffer = function(opts)
+        local gen = original_gen(opts)
+        return function(entry)
+          local e = gen(entry)
+          if e and entry.info.changed == 1 then
+            local orig_display = e.display
+            e.display = function(et)
+              local result, hl = orig_display(et)
+              return '● ' .. result, hl
+            end
+          end
+          return e
+        end
+      end
+      builtin.buffers { sort_mru = true }
+      make_entry.gen_from_buffer = original_gen
+    end, { desc = '[ ] Find existing buffers' })
     vim.keymap.set('n', '<leader>sa', extensions.live_grep_args.live_grep_args, { desc = '[S]earch by [A]rgs' })
 
     -- Slightly advanced example of overriding default behavior and theme

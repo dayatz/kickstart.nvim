@@ -28,6 +28,20 @@ vim.keymap.set('v', '<leader>ql', function()
   vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, result)
 end, { desc = '[Q]uote [L]ist: wrap lines in a quoted list' })
 
+-- Transform space-separated words on one line into a quoted list:
+--   JAN123 JAN456 JAN789  =>  ['JAN123', 'JAN456', 'JAN789']
+vim.keymap.set('n', '<leader>qL', function()
+  local line = vim.api.nvim_get_current_line()
+  local words = {}
+  for word in line:gmatch '%S+' do
+    table.insert(words, "'" .. word .. "'")
+  end
+  if #words > 0 then
+    local result = '[' .. table.concat(words, ', ') .. ']'
+    vim.api.nvim_set_current_line(result)
+  end
+end, { desc = '[Q]uote [L]ist: single-line words to quoted list' })
+
 -- Copy file path with line number(s) to clipboard
 -- Normal mode: path:42 | Visual mode: path:42-50
 local function copy_path_with_line(relative)
