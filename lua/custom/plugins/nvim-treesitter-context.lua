@@ -1,7 +1,7 @@
 return {
   'nvim-treesitter/nvim-treesitter-context',
   opts = {
-    enable = false,
+    enable = true,
   },
   -- config = function()
   --   require('treesitter-context').setup {

@@ -68,3 +68,8 @@ end
 
 vim.keymap.set({ 'n', 'v' }, '<leader>cp', copy_path_with_line(true), { desc = '[C]opy relative [P]ath:line' })
 vim.keymap.set({ 'n', 'v' }, '<leader>cP', copy_path_with_line(false), { desc = '[C]opy absolute [P]ath:line' })
+
+-- Toggle treesitter context
+vim.keymap.set('n', '<leader>tc', function()
+  require('treesitter-context').toggle()
+end, { desc = '[T]oggle Treesitter [C]ontext' })
