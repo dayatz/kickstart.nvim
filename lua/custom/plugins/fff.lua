@@ -3,6 +3,12 @@ return {
   build = function()
     require('fff.download').download_or_build_binary()
   end,
+  opts = {
+    keymaps = {
+      move_up = { '<Up>', '<C-k>' },
+      move_down = { '<Down>', '<C-j>' },
+    },
+  },
   keys = {
     {
       '<leader>ff',
