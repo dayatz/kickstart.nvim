@@ -38,5 +38,12 @@ return {
       end,
       desc = '[F]FF Search [C]urrent word',
     },
+    {
+      '<leader>fr',
+      function()
+        require('fff').scan_files()
+      end,
+      desc = '[F]FF [R]escan files',
+    },
   },
 }
